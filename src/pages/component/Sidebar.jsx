@@ -5,10 +5,25 @@ function Sidebar() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const user = localStorage.getItem("user");
-        if (!user) {
+        const token = localStorage.getItem("token");
+        if (!token) {
             navigate("/login");
+            return;
         }
+
+        fetch(`${import.meta.env.VITE_API_URL}/api/user/verify-token`, {
+            method: "GET",
+            headers: { Authorization: `Bearer ${token}` },
+        })
+            .then((res) => {
+                if (!res.ok) throw new Error();
+                return res.json();
+            })
+            .catch(() => {
+                localStorage.removeItem("token");
+                localStorage.removeItem("user");
+                navigate("/login");
+            });
     }, [navigate]);
 
     return (
@@ -20,6 +35,11 @@ function Sidebar() {
                         <li className="nav-item">
                             <Link className="nav-link" to={`/`}>
                                 👤 Dashboard
+                            </Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link className="nav-link" to={`/`}>
+                                👤 Create Parcel
                             </Link>
                         </li>
                         <li className="nav-item mt-4">
