@@ -34,12 +34,67 @@ function Sidebar() {
                     <ul className="nav flex-column mt-4">
                         <li className="nav-item">
                             <Link className="nav-link" to={`/`}>
-                                👤 Dashboard
+                                ➕ Dashboard
                             </Link>
                         </li>
                         <li className="nav-item">
-                            <Link className="nav-link" to={`/`}>
-                                👤 Create Parcel
+                            <Link className="nav-link" to={`/create-parcel`}>
+                                ➕ Create Parcel
+                            </Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link className="nav-link" to={`/track-parcel`}>
+                                ➕ Track Parcel
+                            </Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link className="nav-link" to={`/parcel-history`}>
+                                ➕ Parcel History
+                            </Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link className="nav-link" to={`/assigned-parcels`}>
+                                ➕ Assigned Parcels
+                            </Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link className="nav-link" to={`/assign-agents`}>
+                                ➕ Assign Agents
+                            </Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link className="nav-link" to={`/admin-dashboard`}>
+                                ➕ Admin Dashboard
+                            </Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link className="nav-link" to={`/all-users-and-bookings`}>
+                                ➕ All Bookings
+                            </Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link className="nav-link" to={`/booking-analytics`}>
+                                ➕ Booking Reports
+                            </Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link className="nav-link" to={`/user-list`}>
+                                ➕ User List
+                            </Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link className="nav-link" to={`/profile`}>
+                                ➕ profile
+                            </Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link className="nav-link" to={`/edit-details`}>
+                                ➕ Edit Details
+                            </Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link className="nav-link" to={`/create-agent`}>
+                                ➕ Create Agent
                             </Link>
                         </li>
                         <li className="nav-item mt-4">

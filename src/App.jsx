@@ -1,5 +1,4 @@
 import { Routes, Route } from 'react-router-dom'
-import Dashboard from './Dashboard'
 import Login from './pages/auth/Login'
 import Register from './pages/auth/Register'
 import CreateParcel from './pages/parcel/CreateParcel'
@@ -26,7 +25,7 @@ function App() {
                 <Route path="/register" element={<Register />} />
 
                 {/* dashboard routes */}
-                <Route path="/" element={<Dashboard />} />
+                <Route path="/" element={<AdminDashboard />} />
                 <Route path="/create-parcel" element={<CreateParcel />} />
                 <Route path="/parcel-history" element={<ParcelHistory />} />
                 <Route path="/track-parcel" element={<TrackParcel />} />

@@ -35,13 +35,17 @@ ChartJS.register(
     LineElement
 );
 
+ChartJS.defaults.font.family = "'Original Surfer', sans-serif";
+ChartJS.defaults.font.size = 14;
+ChartJS.defaults.color = "#212529";
+
 const agentsList = [
     { id: "a1", name: "Tanvir Ahmed" },
     { id: "a2", name: "Sonia Rahman" },
     { id: "a3", name: "Rafiq Islam" },
 ];
 
-// Mock data generator (replace with your API data)
+/* Generate mock data */
 const generateMockData = () => {
     return {
         dailyBookings: [5, 12, 8, 15, 9, 10, 7],
@@ -81,29 +85,22 @@ const generateMockData = () => {
 };
 
 function BookingAnalytics() {
-    // Filters state
     const [startDate, setStartDate] = useState(new Date("2025-07-25"));
     const [endDate, setEndDate] = useState(new Date("2025-07-31"));
     const [selectedAgent, setSelectedAgent] = useState("");
-
-    // Data state
     const [stats, setStats] = useState(generateMockData());
 
-    // Update stats on filter change (simulate API fetch)
     useEffect(() => {
-        // In real app: fetch stats from backend with filters
-        // For demo, just resetting with same mock data
-
         setStats(generateMockData());
     }, [startDate, endDate, selectedAgent]);
 
-    // Chart refs to export images
+    /* Chart refs */
     const barRef = useRef(null);
     const pieRef = useRef(null);
     const lineRef = useRef(null);
     const pickupRef = useRef(null);
 
-    // Chart data configs
+    /* Chart data */
     const barData = {
         labels: stats.dates,
         datasets: [
@@ -171,12 +168,8 @@ function BookingAnalytics() {
         ],
     };
 
-    // Export filtered data as CSV
+    /* Export functions */
     const exportCSV = () => {
-        // Build rows with filters applied
-        // Here: we simulate exporting only filtered range & agent's data
-        // In real app, this would come from your backend API filtered results
-
         const rows = [
             ["Date", "Bookings", "Picked Up", "In Transit", "Delivered", "Failed", "COD", "Prepaid"],
         ];
@@ -185,7 +178,7 @@ function BookingAnalytics() {
             rows.push([
                 date,
                 stats.dailyBookings[idx],
-                stats.statusCounts.pickedUp, // demo, real would be per date
+                stats.statusCounts.pickedUp,
                 stats.statusCounts.inTransit,
                 stats.statusCounts.delivered,
                 stats.statusCounts.failed,
@@ -204,7 +197,7 @@ function BookingAnalytics() {
         a.remove();
     };
 
-    // Export charts as PDF with images
+    /* Export to PDF */
     const exportPDF = () => {
         const doc = new jsPDF();
 
@@ -240,38 +233,44 @@ function BookingAnalytics() {
                     <div className="row mb-4">
                         <div className="col-md-4 mb-3">
                             <label className="form-label fw-semibold">Start Date</label>
-                            <DatePicker
-                                selected={startDate}
-                                onChange={(date) => setStartDate(date)}
-                                className="form-control"
-                                maxDate={endDate}
-                                dateFormat="yyyy-MM-dd"
-                            />
+                            <div>
+                                <DatePicker
+                                    selected={startDate}
+                                    onChange={(date) => setStartDate(date)}
+                                    className="form-control"
+                                    maxDate={endDate}
+                                    dateFormat="yyyy-MM-dd"
+                                />
+                            </div>
                         </div>
                         <div className="col-md-4 mb-3">
                             <label className="form-label fw-semibold">End Date</label>
-                            <DatePicker
-                                selected={endDate}
-                                onChange={(date) => setEndDate(date)}
-                                className="form-control"
-                                minDate={startDate}
-                                dateFormat="yyyy-MM-dd"
-                            />
+                            <div>
+                                <DatePicker
+                                    selected={endDate}
+                                    onChange={(date) => setEndDate(date)}
+                                    className="form-control"
+                                    minDate={startDate}
+                                    dateFormat="yyyy-MM-dd"
+                                />
+                            </div>
                         </div>
                         <div className="col-md-4 mb-3">
                             <label className="form-label fw-semibold">Agent</label>
-                            <select
-                                className="form-select"
-                                value={selectedAgent}
-                                onChange={(e) => setSelectedAgent(e.target.value)}
-                            >
-                                <option value="">All Agents</option>
-                                {agentsList.map((agent) => (
-                                    <option key={agent.id} value={agent.id}>
-                                        {agent.name}
-                                    </option>
-                                ))}
-                            </select>
+                            <div>
+                                <select
+                                    className="form-select d-block w-100"
+                                    value={selectedAgent}
+                                    onChange={(e) => setSelectedAgent(e.target.value)}
+                                >
+                                    <option value="">All Agents</option>
+                                    {agentsList.map((agent) => (
+                                        <option key={agent.id} value={agent.id}>
+                                            {agent.name}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
                         </div>
                     </div>
 
