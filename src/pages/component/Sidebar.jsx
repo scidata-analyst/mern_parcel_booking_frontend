@@ -4,6 +4,10 @@ import { useNavigate, Link } from "react-router-dom";
 function Sidebar() {
     const navigate = useNavigate();
 
+    const profile = localStorage.getItem("user");
+    const userProfile = profile ? JSON.parse(profile) : {};
+    const profileID = userProfile._id;
+
     useEffect(() => {
         const token = localStorage.getItem("token");
         if (!token) {
@@ -16,8 +20,13 @@ function Sidebar() {
             headers: { Authorization: `Bearer ${token}` },
         })
             .then((res) => {
-                if (!res.ok) throw new Error();
-                return res.json();
+                if (res.message === "okay") {
+                    console.log(res);
+                } else {
+                    // localStorage.removeItem("token");
+                    // localStorage.removeItem("user");
+                    // navigate("/login");
+                }
             })
             .catch(() => {
                 localStorage.removeItem("token");
@@ -83,13 +92,13 @@ function Sidebar() {
                             </Link>
                         </li>
                         <li className="nav-item">
-                            <Link className="nav-link" to={`/profile`}>
+                            <Link className="nav-link" to={`/profile/${profileID}`}>
                                 ➕ profile
                             </Link>
                         </li>
                         <li className="nav-item">
-                            <Link className="nav-link" to={`/edit-details`}>
-                                ➕ Edit Details
+                            <Link className="nav-link" to={`/edit-details/${profileID}`}>
+                                ➕ Edit Profile
                             </Link>
                         </li>
                         <li className="nav-item">

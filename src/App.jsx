@@ -41,8 +41,8 @@ function App() {
 
                 {/* user routes */}
                 <Route path="/user-list" element={<UserList />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/edit-details" element={<EditDetails />} />
+                <Route path="/profile/:id" element={<Profile />} />
+                <Route path="/edit-details/:id" element={<EditDetails />} />
 
                 {/* agent routes */}
                 <Route path="/create-agent" element={<CreateAgent />} />

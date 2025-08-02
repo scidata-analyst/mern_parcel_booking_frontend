@@ -1,28 +1,24 @@
 import { Link } from "react-router-dom";
 import Sidebar from "../component/Sidebar";
 import Header from "../component/Header";
+import { useState, useEffect } from "react";
 
 function UserList() {
-    const users = [
-        {
-            id: 1,
-            name: "John Doe",
-            email: "john@example.com",
-            phone: "+880123456789",
-        },
-        {
-            id: 2,
-            name: "Jane Smith",
-            email: "jane@example.com",
-            phone: "+8801987654321",
-        },
-        {
-            id: 3,
-            name: "Rafiul Hasan",
-            email: "rafi@example.com",
-            phone: "+8801712345678",
-        },
-    ];
+    const [users, setUsers] = useState([]);
+    const token = localStorage.getItem("token");
+
+    useEffect(() => {
+        fetch(`${import.meta.env.VITE_API_URL}/api/user/all`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+        })
+            .then((res) => res.json())
+            .then((data) => setUsers(data))
+            .catch((error) => console.error("Error fetching users:", error));
+    }, [token]);
 
     return (
         <div className="container-fluid">
@@ -36,7 +32,7 @@ function UserList() {
                         <div className="card-header bg-white fw-bold d-flex justify-content-between align-items-center">
                             <span>👥 User List</span>
                             <Link to="/create-user" className="btn btn-primary btn-sm">
-                                <i className="bi bi-plus-circle me-1"></i> Add User
+                                <i className="bi bi-plus-circle me-1"></i> Create Agent
                             </Link>
                         </div>
 
@@ -54,27 +50,24 @@ function UserList() {
                                     </thead>
                                     <tbody>
                                         {users.map((user, index) => (
-                                            <tr key={user.id}>
+                                            <tr key={user._id}>
                                                 <td>{index + 1}</td>
                                                 <td>{user.name}</td>
                                                 <td>{user.email}</td>
                                                 <td>{user.phone}</td>
                                                 <td className="text-end">
                                                     <Link
-                                                        to={`/users/${user.id}`}
+                                                        to={`/profile/${user._id}`}
                                                         className="btn btn-sm btn-info me-2"
                                                     >
                                                         <i className="bi bi-eye"></i>
                                                     </Link>
                                                     <Link
-                                                        to={`/users/${user.id}/edit`}
+                                                        to={`/edit-details/${user._id}`}
                                                         className="btn btn-sm btn-warning me-2"
                                                     >
                                                         <i className="bi bi-pencil-square"></i>
                                                     </Link>
-                                                    <button className="btn btn-sm btn-danger">
-                                                        <i className="bi bi-trash"></i>
-                                                    </button>
                                                 </td>
                                             </tr>
                                         ))}
