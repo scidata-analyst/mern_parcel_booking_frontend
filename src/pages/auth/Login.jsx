@@ -29,7 +29,7 @@ function Login() {
             const data = await response.json();
 
             if (!data.token) {
-                setError("Login failed");
+                setError("Login failed. Please check your credentials.");
                 setLoading(false);
                 return;
             }
@@ -43,8 +43,7 @@ function Login() {
                 navigate("/");
             }
         } catch (error) {
-            console.error("Login failed:", error);
-            setError("An error occurred. Please try again.");
+            setError(error.message);
         } finally {
             setLoading(false);
         }

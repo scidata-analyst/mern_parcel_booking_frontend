@@ -134,11 +134,11 @@ function AdminDashboard() {
                             </div>
                         </div>
 
-                        <div className="col-md-6">
+                        <div className="col-md-12">
                             <div className="card shadow-sm border-0 h-100">
                                 <div className="card-header bg-white fw-bold">💳 Payment Breakdown</div>
                                 <div className="card-body">
-                                    <ResponsiveContainer width="100%" height={250}>
+                                    <ResponsiveContainer width="100%" height={350}>
                                         <PieChart>
                                             <Pie
                                                 data={paymentData}

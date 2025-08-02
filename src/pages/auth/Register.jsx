@@ -7,7 +7,6 @@ function Register() {
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
     const [role, setRole] = useState("user");
-    const [isVerified, setIsVerified] = useState(false);
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
@@ -33,7 +32,6 @@ function Register() {
             email,
             phone,
             role,
-            isVerified,
             password
         };
 
@@ -41,7 +39,6 @@ function Register() {
             .post(`${import.meta.env.VITE_API_URL}/api/user/add`, userData)
             .then((response) => {
                 setRole(response.data.role);
-                setIsVerified(response.data.isVerified);
                 setSuccess("User registered successfully. You can now login.");
             })
             .catch((error) => {
