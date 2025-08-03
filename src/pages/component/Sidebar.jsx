@@ -72,11 +72,6 @@ function Sidebar() {
                             </Link>
                         </li>
                         <li className="nav-item">
-                            <Link className="nav-link" to={`/admin-dashboard`}>
-                                ➕ Admin Dashboard
-                            </Link>
-                        </li>
-                        <li className="nav-item">
                             <Link className="nav-link" to={`/all-users-and-bookings`}>
                                 ➕ All Bookings
                             </Link>
