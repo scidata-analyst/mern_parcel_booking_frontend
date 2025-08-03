@@ -7,7 +7,6 @@ function AssignedParcels() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
     const [showModal, setShowModal] = useState(false);
-    const [selectedParcel, setSelectedParcel] = useState(null);
     const [formData, setFormData] = useState({
         parcel_id: "",
         user_id: "",
@@ -45,17 +44,6 @@ function AssignedParcels() {
             .finally(() => setLoading(false));
     }, []);
 
-    const statusBadge = (status) => {
-        const badgeMap = {
-            "Pending": "secondary",
-            "Picked Up": "info",
-            "In Transit": "warning text-dark",
-            "Delivered": "success",
-            "Failed": "danger",
-        };
-        return <span className={`badge bg-${badgeMap[status] || "light"}`}>{status}</span>;
-    };
-
     const handleSubmit = async () => {
         try {
             console.log(formData);
@@ -68,14 +56,12 @@ function AssignedParcels() {
                 body: JSON.stringify(formData),
             });
 
-            if (!response.ok) throw new Error("Failed to save history");
-
             const result = await response.json();
 
-            console.log(result);
+            setError(result.message || "Something went wrong");
             setShowModal(false);
         } catch (err) {
-            alert(err.message || "Something went wrong");
+            setError(err.message || "Something went wrong");
         }
     };
 
@@ -119,28 +105,27 @@ function AssignedParcels() {
                                             {parcels.map((parcel) => (
                                                 <tr key={parcel._id}>
                                                     <td>{parcel._id}</td>
-                                                    <td>{parcel.sender_name || "N/A"}</td>
-                                                    <td>{parcel.receiver_name || "N/A"}</td>
+                                                    <td>{parcel.history[0]?.sender || "N/A"}</td>
+                                                    <td>{parcel.history[0]?.receiver || "N/A"}</td>
                                                     <td>{parcel.pickup_address}</td>
                                                     <td>{parcel.delivery_address}</td>
-                                                    <td>{new Date(parcel.createdAt).toLocaleDateString()}</td>
-                                                    <td>{statusBadge(parcel.status)}</td>
+                                                    <td>{parcel.history[0]?.assigned_date || "N/A"}</td>
+                                                    <td>{parcel.history[0]?.status || "N/A"}</td>
                                                     <td className="text-center">
                                                         <button
                                                             className="btn btn-sm btn-outline-primary"
                                                             onClick={() => {
-                                                                setSelectedParcel(parcel);
                                                                 setFormData({
                                                                     parcel_id: parcel._id || "",
-                                                                    user_id: parcel.user_details || "",
-                                                                    status: "",
-                                                                    amount: "",
-                                                                    delivery_date: "",
-                                                                    assigned_date: "",
-                                                                    latitude: "",
-                                                                    longitude: "",
-                                                                    sender: "",
-                                                                    receiver: "",
+                                                                    user_id: parcel.user_details?._id || "",
+                                                                    status: parcel.history[0]?.status || "Pending",
+                                                                    amount: parcel.history[0]?.amount || "",
+                                                                    delivery_date: parcel.history[0]?.delivery_date || "",
+                                                                    assigned_date: parcel.history[0]?.assigned_date || "",
+                                                                    latitude: parcel.history[0]?.latitude || "",
+                                                                    longitude: parcel.history[0]?.longitude || "",
+                                                                    sender: parcel.history[0]?.sender || "",
+                                                                    receiver: parcel.history[0]?.receiver || "",
                                                                 });
                                                                 setShowModal(true);
                                                             }}

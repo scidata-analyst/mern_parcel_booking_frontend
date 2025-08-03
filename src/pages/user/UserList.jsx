@@ -5,9 +5,11 @@ import { useState, useEffect } from "react";
 
 function UserList() {
     const [users, setUsers] = useState([]);
+    const [loading, setLoading] = useState(true);
     const token = localStorage.getItem("token");
 
     useEffect(() => {
+        setLoading(true);
         fetch(`${import.meta.env.VITE_API_URL}/api/user/all`, {
             method: "GET",
             headers: {
@@ -17,7 +19,8 @@ function UserList() {
         })
             .then((res) => res.json())
             .then((data) => setUsers(data))
-            .catch((error) => console.error("Error fetching users:", error));
+            .catch((error) => console.error("Error fetching users:", error))
+            .finally(() => setLoading(false));
     }, [token]);
 
     return (
@@ -37,43 +40,59 @@ function UserList() {
                         </div>
 
                         <div className="card-body">
-                            <div className="table-responsive">
-                                <table className="table table-hover align-middle">
-                                    <thead className="table-light">
-                                        <tr>
-                                            <th>#</th>
-                                            <th>👤 Name</th>
-                                            <th>📧 Email</th>
-                                            <th>📱 Phone</th>
-                                            <th className="text-end">Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {users.map((user, index) => (
-                                            <tr key={user._id}>
-                                                <td>{index + 1}</td>
-                                                <td>{user.name}</td>
-                                                <td>{user.email}</td>
-                                                <td>{user.phone}</td>
-                                                <td className="text-end">
-                                                    <Link
-                                                        to={`/profile/${user._id}`}
-                                                        className="btn btn-sm btn-info me-2"
-                                                    >
-                                                        <i className="bi bi-eye"></i>
-                                                    </Link>
-                                                    <Link
-                                                        to={`/edit-details/${user._id}`}
-                                                        className="btn btn-sm btn-warning me-2"
-                                                    >
-                                                        <i className="bi bi-pencil-square"></i>
-                                                    </Link>
-                                                </td>
+                            {loading ? (
+                                <div className="text-center py-4">
+                                    <div className="spinner-border text-primary" role="status" aria-label="Loading users">
+                                        <span className="visually-hidden">Loading...</span>
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className="table-responsive">
+                                    <table className="table table-hover align-middle">
+                                        <thead className="table-light">
+                                            <tr>
+                                                <th>#</th>
+                                                <th>👤 Name</th>
+                                                <th>📧 Email</th>
+                                                <th>📱 Phone</th>
+                                                <th className="text-end">Actions</th>
                                             </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </div>
+                                        </thead>
+                                        <tbody>
+                                            {users.length > 0 ? (
+                                                users.map((user, index) => (
+                                                    <tr key={user._id}>
+                                                        <td>{index + 1}</td>
+                                                        <td>{user.name}</td>
+                                                        <td>{user.email}</td>
+                                                        <td>{user.phone}</td>
+                                                        <td className="text-end">
+                                                            <Link
+                                                                to={`/profile/${user._id}`}
+                                                                className="btn btn-sm btn-info me-2"
+                                                            >
+                                                                <i className="bi bi-eye"></i>
+                                                            </Link>
+                                                            <Link
+                                                                to={`/edit-details/${user._id}`}
+                                                                className="btn btn-sm btn-warning me-2"
+                                                            >
+                                                                <i className="bi bi-pencil-square"></i>
+                                                            </Link>
+                                                        </td>
+                                                    </tr>
+                                                ))
+                                            ) : (
+                                                <tr>
+                                                    <td colSpan="5" className="text-center text-muted">
+                                                        No users found.
+                                                    </td>
+                                                </tr>
+                                            )}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </main>
